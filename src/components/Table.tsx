@@ -1,45 +1,62 @@
 import React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper
+} from "@mui/material";
 import { ITableProps } from "../types/table";
 
 class TableComponent extends React.Component<ITableProps> {
-  getDistinctField() {
+  headers: Array<string>;
 
+  constructor(props: ITableProps) {
+    super(props);
+    this.headers = this.getDistinctField();
+  }
+
+  getDistinctField(): Array<string> {
+    let arr: Array<string> = [];
+    if (this.props.data) {
+      for (let i = 0; i < this.props.data.length; i++) {
+        arr.push(...Object.keys(this.props.data[i]));
+      }
+    }
+    return [...Array.from(new Set(arr))];
   }
 
   render() {
     return (
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 200 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="right">Protein&nbsp;(g)</TableCell>
+              {this.headers.map((header, index) => (
+                <TableCell
+                  align="center"
+                  key={index}
+                  sx={{ "&": { textTransform: "capitalize" } }}
+                >
+                  {header}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {this.props.data &&
-              this.props.data.map((row) => (
+              this.props.data.map((row, rowIndex) => (
                 <TableRow
-                  key={row.name}
+                  key={rowIndex}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right">{row.calories}</TableCell>
-                  <TableCell align="right">{row.fat}</TableCell>
-                  <TableCell align="right">{row.carbs}</TableCell>
-                  <TableCell align="right">{row.protein}</TableCell>
+                  {this.headers.map((header, valueIndex) => (
+                    <TableCell align="center" key={valueIndex}>
+                      {row[header]}
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))}
           </TableBody>

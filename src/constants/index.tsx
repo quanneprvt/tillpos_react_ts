@@ -18,4 +18,4 @@ const tableData: Array<IProductData> = [
   }
 ];
 
-export { tableData }
+export { tableData };
