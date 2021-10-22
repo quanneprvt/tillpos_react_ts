@@ -1,5 +1,6 @@
-interface ITableProps {
-  data?: Array<any>;
+interface IItemAdd {
+  id: number;
+  item: any
 }
 
-export type { ITableProps };
+export type { IItemAdd };

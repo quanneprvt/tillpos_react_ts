@@ -1,4 +1,4 @@
-import { IProductData } from "../types/constants";
+import { IProductData, IVendorData } from "../types/constants";
 
 const tableData: Array<IProductData> = [
   {
@@ -18,4 +18,19 @@ const tableData: Array<IProductData> = [
   }
 ];
 
-export { tableData };
+const vendorData: Array<IVendorData> = [
+  {
+    text: "Microsoft",
+    value: "microsoft"
+  },
+  {
+    text: "Amazon",
+    value: "amazon"
+  },
+  {
+    text: "Facebook",
+    value: "facebook"
+  }
+];
+
+export { tableData, vendorData };

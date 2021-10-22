@@ -1,7 +1,7 @@
 import React from "react";
 import Home from "./views/Home";
 import "./App.css";
-import { Switch, Theme } from "@mui/material";
+import { Switch, FormControlLabel, Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 interface IProps {}
@@ -12,7 +12,7 @@ class App extends React.Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      toggleDark: false
+      toggleDark: true
     };
   }
 
@@ -28,17 +28,26 @@ class App extends React.Component<IProps, IStates> {
     });
 
     return (
-      <div>
-        <ThemeProvider theme={theme}>
-          <Switch
-            checked={this.state.toggleDark}
-            onChange={() => this.handleModeChange()}
-            name="toggleDark"
-            color="default"
+      <ThemeProvider theme={theme}>
+        <Box
+          color="text.primary"
+          bgcolor="background.default"
+          sx={{ "&": { width: "100vw", height: "100vh" } }}
+        >
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.toggleDark}
+                onChange={() => this.handleModeChange()}
+                name="toggleDark"
+                color="default"
+              />
+            }
+            label={this.state.toggleDark ? "Dark" : "Light"}
           />
           <Home />
-        </ThemeProvider>
-      </div>
+        </Box>
+      </ThemeProvider>
     );
   }
 }

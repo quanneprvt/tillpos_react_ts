@@ -6,14 +6,21 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper
+  Paper,
+  IconButton
 } from "@mui/material";
-import { ITableProps } from "../types/table";
+import AddIcon from "@mui/icons-material/Add";
+import { IItemAdd } from "../types/Table";
 
-class TableComponent extends React.Component<ITableProps> {
+interface IProps {
+  data?: Array<any>;
+  isAddable?: boolean;
+  onAddItem?: (params: IItemAdd) => void;
+}
+
+class TableComponent extends React.Component<IProps> {
   headers: Array<string>;
-
-  constructor(props: ITableProps) {
+  constructor(props: IProps) {
     super(props);
     this.headers = this.getDistinctField();
   }
@@ -28,12 +35,17 @@ class TableComponent extends React.Component<ITableProps> {
     return [...Array.from(new Set(arr))];
   }
 
+  onAddItem(item: IItemAdd) {
+    this.props.onAddItem && this.props.onAddItem(item);
+  }
+
   render() {
     return (
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 200 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              {this.props.isAddable ? <TableCell></TableCell> : null}
               {this.headers.map((header, index) => (
                 <TableCell
                   align="center"
@@ -52,6 +64,17 @@ class TableComponent extends React.Component<ITableProps> {
                   key={rowIndex}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
+                  {this.props.isAddable ? (
+                    <TableCell align="center">
+                      <IconButton
+                        onClick={() =>
+                          this.onAddItem({ id: rowIndex, item: row })
+                        }
+                      >
+                        <AddIcon></AddIcon>
+                      </IconButton>
+                    </TableCell>
+                  ) : null}
                   {this.headers.map((header, valueIndex) => (
                     <TableCell align="center" key={valueIndex}>
                       {row[header]}

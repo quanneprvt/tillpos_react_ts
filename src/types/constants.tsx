@@ -4,4 +4,9 @@ interface IProductData {
   price: number;
 }
 
-export type { IProductData };
+interface IVendorData {
+  text: string;
+  value: string;
+}
+
+export type { IProductData, IVendorData };

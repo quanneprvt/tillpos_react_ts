@@ -1,10 +1,9 @@
 import React from "react";
-import Table from "../components/Table";
-import { tableData } from "../constants/index";
+import ProductCheckout from "../modules/ProductCheckout";
 
 class Home extends React.Component {
   render() {
-    return <Table data={tableData} />;
+    return <ProductCheckout />;
   }
 }
 
