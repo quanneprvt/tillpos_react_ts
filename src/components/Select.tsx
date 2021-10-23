@@ -35,7 +35,7 @@ class SelectComponent extends React.Component<IProps, IStates> {
     const selected =
       this.props.data &&
       this.props.data.find((itm) => itm.value === evt.target.value);
-    this.setState({selectValue: selected ? selected.value : ""});
+    this.setState({ selectValue: selected ? selected.value : "" });
     this.props.onSelect && this.props.onSelect(selected ? selected.value : "");
   }
 

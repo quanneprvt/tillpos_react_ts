@@ -1,13 +1,16 @@
 import React from "react";
+//component
 import Table from "../components/Table";
 import Select from "../components/Select";
 import Dialog from "../components/Dialog";
 import List from "../components/List";
 import ListItemCollapse from "../components/ListItemCollapse";
-import { tableData, vendorData } from "../constants/index";
 import { Button, Container, ListItemText } from "@mui/material";
 import { IItemAdd } from "../types/Table";
-
+//module
+import AddRule from "./AddRule";
+//constant
+import { tableData, vendorData } from "../constants/index";
 interface IItemProduct extends IItemAdd {
   count: number;
 }
@@ -20,27 +23,17 @@ interface IItemsCheckout {
 interface IProps {}
 
 interface IStates {
-  isDialogOpen: boolean;
+  addedItems: Array<IItemsCheckout>;
 }
 
-class ProductCheckout extends React.Component<IProps, IStates> {
-  addedItem: Array<IItemsCheckout>;
+class ProductCheckoutModule extends React.Component<IProps, IStates> {
   selectedVendor: string | undefined;
   constructor(props: IProps) {
     super(props);
-    this.state = {
-      isDialogOpen: false
-    };
-    this.addedItem = [];
     this.selectedVendor = vendorData[0].value;
-  }
-
-  openCheckoutDialog() {
-    this.setState({ isDialogOpen: true });
-  }
-
-  closeCheckoutDialog() {
-    this.setState({ isDialogOpen: false });
+    this.state = {
+      addedItems: []
+    }
   }
 
   addItemVendor(item: IItemAdd) {
@@ -52,11 +45,11 @@ class ProductCheckout extends React.Component<IProps, IStates> {
       vendor: this.selectedVendor || "",
       items: [itemProduct]
     };
-    this.addedItem.push(itemsCheckout);
+    this.state.addedItems.push(itemsCheckout);
   }
 
   addItemProduct(item: IItemAdd, index: number) {
-    const itemCheckout: IItemsCheckout = this.addedItem[index];
+    const itemCheckout: IItemsCheckout = this.state.addedItems[index];
     const itemProductIndex = itemCheckout.items.findIndex(
       (itm) => itm.id === item.id
     );
@@ -73,7 +66,7 @@ class ProductCheckout extends React.Component<IProps, IStates> {
   }
 
   onAddItem(item: IItemAdd) {
-    const index = this.addedItem.findIndex(
+    const index = this.state.addedItems.findIndex(
       (itm) => itm.vendor === this.selectedVendor
     );
     if (index === -1) {
@@ -81,6 +74,7 @@ class ProductCheckout extends React.Component<IProps, IStates> {
     } else {
       this.addItemProduct(item, index);
     }
+    this.setState({ addedItems: this.state.addedItems });
   }
 
   onVendorSelect(vendor: string) {
@@ -96,39 +90,41 @@ class ProductCheckout extends React.Component<IProps, IStates> {
           onSelect={(vendor) => this.onVendorSelect(vendor)}
           selected={vendorData[0].value}
         />
-        <Button variant="contained" onClick={() => this.openCheckoutDialog()}>
-          Checkout
-        </Button>
         <Table
           data={tableData}
           isAddable={true}
           onAddItem={(item) => this.onAddItem(item)}
         />
-        <Button variant="contained" onClick={() => this.openCheckoutDialog()}>
-          Add Rule
-        </Button>
+        <AddRule />
         <Dialog
-          isOpen={this.state.isDialogOpen}
-          handleClose={() => this.closeCheckoutDialog()}
+          buttonText="Check out"
           title="Product Checkout"
           content={
             <Container>
               <List
-                items={this.addedItem.map((itemCheckout, index) => (
-                  <ListItemCollapse
-                    key={index}
-                    header={<ListItemText sx={{"&": {textTransform: "capitalize"}}}>{itemCheckout.vendor}</ListItemText>}
-                    items={
-                      <Table
-                        data={itemCheckout.items.map((itemCheckout) => ({
-                          amount: itemCheckout.count,
-                          name: itemCheckout.item.name,
-                          price: itemCheckout.item.price
-                        }))}
-                      />
-                    }
-                  />
-                ))}
+                items={this.state.addedItems.map((itemCheckout, index) => {
+                  return (
+                    <ListItemCollapse
+                      key={index}
+                      header={
+                        <ListItemText
+                          sx={{ "&": { textTransform: "capitalize" } }}
+                        >
+                          {itemCheckout.vendor}
+                        </ListItemText>
+                      }
+                      items={
+                        <Table
+                          data={itemCheckout.items.map((itemCheckout) => ({
+                            amount: itemCheckout.count,
+                            name: itemCheckout.item.name,
+                            price: itemCheckout.item.price
+                          }))}
+                        />
+                      }
+                    />
+                  );
+                })}
               />
             </Container>
           }
@@ -138,4 +134,4 @@ class ProductCheckout extends React.Component<IProps, IStates> {
   }
 }
 
-export default ProductCheckout;
+export default ProductCheckoutModule;

@@ -33,9 +33,7 @@ class ListItemCollapseComponent extends React.Component<IProps, IStates> {
         </ListItemButton>
         <Collapse in={this.state.isOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem>
-              {this.props.items}
-            </ListItem>
+            <ListItem>{this.props.items}</ListItem>
           </List>
         </Collapse>
       </>

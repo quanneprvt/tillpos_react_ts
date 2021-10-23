@@ -1,12 +1,17 @@
 import React, { ReactNode } from "react";
-import { Dialog, DialogTitle, Paper, PaperProps } from "@mui/material";
+import { Dialog, DialogTitle, Paper, PaperProps, Button } from "@mui/material";
 import Draggable from "react-draggable";
 
 interface IProps {
   title?: string;
   content?: ReactNode;
-  handleClose?: () => void;
-  isOpen?: boolean;
+  buttonText: string;
+  onDialogOpen?: () => void;
+  onDialogClose?: () => void;
+}
+
+interface IStates {
+  isOpen: boolean;
 }
 
 function PaperComponent(props: PaperProps) {
@@ -17,27 +22,47 @@ function PaperComponent(props: PaperProps) {
       cancel={'[class*="MuiDialogContent-root"]'}
       nodeRef={nodeRef}
     >
-      <Paper {...props} ref={nodeRef}/>
+      <Paper {...props} ref={nodeRef} />
     </Draggable>
   );
 }
 
-class DialogComponent extends React.Component<IProps> {
+class DialogComponent extends React.Component<IProps, IStates> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      isOpen: false
+    }
+  }
+
+  onOpen() {
+    this.setState({ isOpen: true });
+    this.props.onDialogOpen && this.props.onDialogOpen();
+  }
+
   onClose() {
-    this.props.handleClose && this.props.handleClose();
+    this.setState({ isOpen: false });
+    this.props.onDialogClose && this.props.onDialogClose();
   }
 
   render() {
     return (
-      <Dialog
-        onClose={() => this.onClose()}
-        open={!!this.props.isOpen}
-        PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
-      >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">{this.props.title}</DialogTitle>
-        {this.props.content && this.props.content}
-      </Dialog>
+      <>
+        <Button variant="contained" onClick={() => this.onOpen()}>
+          {this.props.buttonText}
+        </Button>
+        <Dialog
+          onClose={() => this.onClose()}
+          open={this.state.isOpen}
+          PaperComponent={PaperComponent}
+          aria-labelledby="draggable-dialog-title"
+        >
+          <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+            {this.props.title}
+          </DialogTitle>
+          {this.props.content && this.props.content}
+        </Dialog>
+      </>
     );
   }
 }

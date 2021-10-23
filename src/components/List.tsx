@@ -7,11 +7,7 @@ interface IProps {
 
 class ListComponent extends React.Component<IProps> {
   render() {
-    return (
-      <List>
-        {this.props.items}
-      </List>
-    );
+    return <List>{this.props.items}</List>;
   }
 }
 
