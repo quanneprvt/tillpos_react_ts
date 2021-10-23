@@ -41,7 +41,7 @@ class SelectComponent extends React.Component<IProps, IStates> {
 
   render() {
     return (
-      <FormControl sx={{ m: 1, minWidth: 150 }}>
+      <FormControl>
         <InputLabel id="demo-simple-select-label">
           {this.props.label}
         </InputLabel>

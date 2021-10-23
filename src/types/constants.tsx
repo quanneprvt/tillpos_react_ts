@@ -1,12 +1,11 @@
+import { ISelect } from "./Select";
+
 interface IProductData {
   name: string;
   description: string;
   price: number;
 }
 
-interface IVendorData {
-  text: string;
-  value: string;
-}
+interface IVendorData extends ISelect {}
 
 export type { IProductData, IVendorData };
