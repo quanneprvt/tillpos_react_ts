@@ -2,28 +2,24 @@ import React from "react";
 //component
 import Table from "../components/Table";
 import Select from "../components/Select";
-import Dialog from "../components/Dialog";
 import List from "../components/List";
 import ListItemCollapse from "../components/ListItemCollapse";
-import { Button, Container, ListItemText } from "@mui/material";
-import { IItemAdd } from "../types/Table";
+import { ListItemText } from "@mui/material";
 //module
 import AddRule from "./AddRule";
+import Checkout from "./Checkout";
 //constant
 import { tableData, vendorData } from "../constants/index";
-interface IItemProduct extends IItemAdd {
-  count: number;
-}
-
-interface IItemsCheckout {
-  vendor: string;
-  items: Array<IItemProduct>;
-}
+//type
+import { IItemAdd } from "../types/Table";
+import { IItemProduct, IItemsCheckout } from "../types/ProductCheckout";
+import { IRuleData } from "../types/AddRule";
 
 interface IProps {}
 
 interface IStates {
   addedItems: Array<IItemsCheckout>;
+  rules: Array<IRuleData>;
 }
 
 class ProductCheckoutModule extends React.Component<IProps, IStates> {
@@ -32,8 +28,9 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
     super(props);
     this.selectedVendor = vendorData[0].value;
     this.state = {
-      addedItems: []
-    }
+      addedItems: [],
+      rules: []
+    };
   }
 
   addItemVendor(item: IItemAdd) {
@@ -81,6 +78,11 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
     this.selectedVendor = vendorData.find((vd) => vd.value === vendor)?.value;
   }
 
+  onRuleAdd(ruleData: IRuleData) {
+    this.state.rules.push(ruleData);
+    this.setState({ rules: this.state.rules });
+  }
+
   render() {
     return (
       <div>
@@ -95,39 +97,24 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
           isAddable={true}
           onAddItem={(item) => this.onAddItem(item)}
         />
-        <AddRule />
-        <Dialog
-          buttonText="Check out"
-          title="Product Checkout"
-          content={
-            <Container>
-              <List
-                items={this.state.addedItems.map((itemCheckout, index) => {
-                  return (
-                    <ListItemCollapse
-                      key={index}
-                      header={
-                        <ListItemText
-                          sx={{ "&": { textTransform: "capitalize" } }}
-                        >
-                          {itemCheckout.vendor}
-                        </ListItemText>
-                      }
-                      items={
-                        <Table
-                          data={itemCheckout.items.map((itemCheckout) => ({
-                            amount: itemCheckout.count,
-                            name: itemCheckout.item.name,
-                            price: itemCheckout.item.price
-                          }))}
-                        />
-                      }
-                    />
-                  );
-                })}
-              />
-            </Container>
-          }
+        <AddRule onRuleAdd={(ruleData) => this.onRuleAdd(ruleData)} />
+        <Checkout addedItems={this.state.addedItems} />
+        <List
+          items={this.state.rules.map((rule, index) => (
+            <ListItemCollapse
+              key={index}
+              header={
+                <ListItemText sx={{ "&": { textTransform: "capitalize" } }}>
+                  {`Rule ${index}`}
+                </ListItemText>
+              }
+              items={
+                <ListItemText>
+                  Vendor - 
+                </ListItemText>
+              }
+            />
+          ))}
         />
       </div>
     );

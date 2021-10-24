@@ -8,4 +8,10 @@ interface IProductData {
 
 interface IVendorData extends ISelect {}
 
-export type { IProductData, IVendorData };
+interface ISelectCondition {
+  EACH: ISelect;
+  ALL: ISelect;
+  AT_LEAST: ISelect;
+}
+
+export type { IProductData, IVendorData, ISelectCondition };

@@ -1,11 +1,20 @@
 import React, { ReactNode } from "react";
-import { Dialog, DialogTitle, Paper, PaperProps, Button } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  Paper,
+  PaperProps,
+  Button,
+  DialogActions
+} from "@mui/material";
 import Draggable from "react-draggable";
 
 interface IProps {
   title?: string;
   content?: ReactNode;
   buttonText: string;
+  actionButtons?: ReactNode | ReactNode[];
+  isOpen?: boolean;
   onDialogOpen?: () => void;
   onDialogClose?: () => void;
 }
@@ -32,16 +41,16 @@ class DialogComponent extends React.Component<IProps, IStates> {
     super(props);
     this.state = {
       isOpen: false
-    }
+    };
   }
 
   onOpen() {
-    this.setState({ isOpen: true });
+    if (this.props.isOpen === undefined) this.setState({ isOpen: true });
     this.props.onDialogOpen && this.props.onDialogOpen();
   }
 
   onClose() {
-    this.setState({ isOpen: false });
+    if (this.props.isOpen === undefined) this.setState({ isOpen: false });
     this.props.onDialogClose && this.props.onDialogClose();
   }
 
@@ -53,7 +62,7 @@ class DialogComponent extends React.Component<IProps, IStates> {
         </Button>
         <Dialog
           onClose={() => this.onClose()}
-          open={this.state.isOpen}
+          open={this.props.isOpen === undefined ? this.state.isOpen : this.props.isOpen}
           PaperComponent={PaperComponent}
           aria-labelledby="draggable-dialog-title"
         >
@@ -61,6 +70,9 @@ class DialogComponent extends React.Component<IProps, IStates> {
             {this.props.title}
           </DialogTitle>
           {this.props.content && this.props.content}
+          {this.props.actionButtons ? (
+            <DialogActions>{this.props.actionButtons}</DialogActions>
+          ) : null}
         </Dialog>
       </>
     );

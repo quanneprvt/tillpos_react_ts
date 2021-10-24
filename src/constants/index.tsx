@@ -1,4 +1,4 @@
-import { IProductData, IVendorData } from "../types/constants";
+import { IProductData, IVendorData, ISelectCondition } from "../types/constants";
 
 const tableData: Array<IProductData> = [
   {
@@ -33,4 +33,19 @@ const vendorData: Array<IVendorData> = [
   }
 ];
 
-export { tableData, vendorData };
+const selectEachAll: ISelectCondition = {
+  EACH: {
+    text: "Each",
+    value: "each"
+  },
+  ALL: {
+    text: "All",
+    value: "all"
+  },
+  AT_LEAST: {
+    text: "At least",
+    value: "at_least"
+  }
+};
+
+export { tableData, vendorData, selectEachAll };
