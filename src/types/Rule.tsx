@@ -1,13 +1,15 @@
 interface IRuleData {
   itemType: {
     vendor: string,
-    quantity: string,
+    operator: string,
     amount: number,
     product: string
   },
   discountType: {
+    productDiscountType: string,
     amount: number,
-    price: number
+    price: number,
+    percent: number
   }
 }
 

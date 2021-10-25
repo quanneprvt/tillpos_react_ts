@@ -2,6 +2,7 @@ import { IItemAdd } from "./Table";
 
 interface IItemProduct extends IItemAdd {
   count: number;
+  totalPrice: number;
 }
 
 interface IItemsCheckout {

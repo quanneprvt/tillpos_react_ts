@@ -6,6 +6,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 interface IProps {
   header?: ReactNode;
   items?: ReactNode;
+  additionalComponent?: ReactNode | ReactNode[];
 }
 
 interface IStates {
@@ -27,10 +28,13 @@ class ListItemCollapseComponent extends React.Component<IProps, IStates> {
   render() {
     return (
       <>
-        <ListItemButton onClick={() => this.handleClick()}>
-          {this.props.header}
-          {this.state.isOpen ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
+        <ListItem>
+          <ListItemButton onClick={() => this.handleClick()}>
+            {this.props.header}
+            {this.state.isOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          {this.props.additionalComponent}
+        </ListItem>
         <Collapse in={this.state.isOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem>{this.props.items}</ListItem>

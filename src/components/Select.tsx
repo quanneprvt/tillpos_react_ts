@@ -27,7 +27,11 @@ class SelectComponent extends React.Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      selectValue: this.props.data ? this.props.data[0].value : ""
+      selectValue: this.props.selected
+        ? this.props.selected
+        : this.props.data
+        ? this.props.data[0].value
+        : ""
     };
   }
 

@@ -13,6 +13,7 @@ interface IProps {
   title?: string;
   content?: ReactNode;
   buttonText: string;
+  isShowButton?: boolean;
   actionButtons?: ReactNode | ReactNode[];
   isOpen?: boolean;
   onDialogOpen?: () => void;
@@ -57,12 +58,18 @@ class DialogComponent extends React.Component<IProps, IStates> {
   render() {
     return (
       <>
-        <Button variant="contained" onClick={() => this.onOpen()}>
-          {this.props.buttonText}
-        </Button>
+        {this.props.isShowButton ? (
+          <Button variant="contained" onClick={() => this.onOpen()}>
+            {this.props.buttonText}
+          </Button>
+        ) : null}
         <Dialog
           onClose={() => this.onClose()}
-          open={this.props.isOpen === undefined ? this.state.isOpen : this.props.isOpen}
+          open={
+            this.props.isOpen === undefined
+              ? this.state.isOpen
+              : this.props.isOpen
+          }
           PaperComponent={PaperComponent}
           aria-labelledby="draggable-dialog-title"
         >
