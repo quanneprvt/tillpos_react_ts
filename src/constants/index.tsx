@@ -1,4 +1,11 @@
-import { IProductData, IVendorData, ISelectCondition, IProductDiscountType, IRuleMode } from "../types/constants";
+import {
+  IProductData,
+  IVendorData,
+  ISelectCondition,
+  IProductDiscountType,
+  IRuleMode
+} from "../types/constants";
+import { IRuleData } from "../types/Rule";
 import { ISelect } from "../types/Select";
 import { toSnakeCase } from "../utils/index";
 
@@ -21,6 +28,10 @@ const tableData: Array<IProductData> = [
 ];
 
 const vendorData: Array<IVendorData> = [
+  {
+    text: "Default",
+    value: "default"
+  },
   {
     text: "Microsoft",
     value: "microsoft"
@@ -69,7 +80,7 @@ const productDiscountType: IProductDiscountType = {
   }
 };
 
-const pizzaSelect: Array<ISelect> = (function(){
+const pizzaSelect: Array<ISelect> = (function () {
   const data: Array<ISelect> = tableData.map((data) => {
     const formatData: ISelect = {
       text: data.name,
@@ -83,9 +94,9 @@ const pizzaSelect: Array<ISelect> = (function(){
   };
   data.push(additionalData);
   return data;
-}());
+})();
 
-const ruleModes:IRuleMode = {
+const ruleModes: IRuleMode = {
   ADD: {
     text: "Add",
     value: "add"
@@ -94,6 +105,59 @@ const ruleModes:IRuleMode = {
     text: "Edit",
     value: "edit"
   }
-}
+};
 
-export { tableData, vendorData, operatorSelect, pizzaSelect, productDiscountType, ruleModes };
+const defaultRule: Array<IRuleData> = [
+  {
+    itemType: {
+      vendor: "microsoft",
+      operator: "greater_or_equal_than",
+      amount: 3,
+      product: "small_pizza"
+    },
+    discountType: {
+      productDiscountType: "each",
+      amount: 2,
+      price: 0,
+      percent: 0
+    }
+  },
+  {
+    itemType: {
+      vendor: "amazon",
+      operator: "greater_or_equal_than",
+      amount: 1,
+      product: "large_pizza"
+    },
+    discountType: {
+      productDiscountType: "each",
+      amount: 1,
+      price: 19.99,
+      percent: 0
+    }
+  },
+  {
+    itemType: {
+      vendor: "facebook",
+      operator: "greater_or_equal_than",
+      amount: 5,
+      product: "medium_pizza"
+    },
+    discountType: {
+      productDiscountType: "each",
+      amount: 4,
+      price: 0,
+      percent: 0
+    }
+  }
+];
+
+export {
+  tableData,
+  vendorData,
+  operatorSelect,
+  pizzaSelect,
+  productDiscountType,
+  ruleModes,
+  defaultRule
+};

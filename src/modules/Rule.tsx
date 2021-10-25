@@ -57,7 +57,9 @@ class AddRuleModule extends React.Component<IProps, IStates> {
   }
 
   onRuleAdd() {
-    this.props.onRuleAdd && this.props.onRuleAdd(JSON.parse(JSON.stringify(this.state.ruleData)));
+    const rule = JSON.parse(JSON.stringify(this.state.ruleData));
+    console.log(rule);
+    this.props.onRuleAdd && this.props.onRuleAdd(rule);
     this.onClose();
   }
 

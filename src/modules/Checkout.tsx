@@ -61,42 +61,37 @@ class CheckoutModule extends React.Component<IProps, IStates> {
         percent: 0
       };
       for (let j = 0; j < productRules.length; j++) {
-        const discountType = productRules[i].discountType.productDiscountType;
+        const productRule = productRules[j];
+        const discountType = productRule.discountType.productDiscountType;
         if (discountType === productDiscountType.ALL.value) {
-          if (this.checkCondition(itemToCheck, productRules[i])) {
-            discount.percent = productRules[i].discountType.percent || 0;
-            discount.price = productRules[i].discountType.price || 0;
+          if (this.checkCondition(itemToCheck, productRule)) {
+            discount.percent = productRule.discountType.percent || 0;
+            discount.price = productRule.discountType.price || 0;
           }
         } else if (discountType === productDiscountType.EACH.value) {
           if (itemToCheck) {
             discount.totalAmount =
-              productRules[i].discountType.amount *
-                Math.floor(
-                  itemToCheck?.count / productRules[i].itemType.amount
-                ) +
-              (itemToCheck?.count % productRules[i].itemType.amount);
-            if (productRules[i].discountType.price) {
+              productRule.discountType.amount *
+                Math.floor(itemToCheck?.count / productRule.itemType.amount) +
+              (itemToCheck?.count % productRule.itemType.amount);
+            if (productRule.discountType.price) {
               const normalPrice = itemToCheck.item.price;
               const avgPrice =
-                (Math.floor(
-                  itemToCheck?.count / productRules[i].itemType.amount
-                ) *
-                  productRules[i].itemType.amount *
-                  productRules[i].discountType.price +
-                  (itemToCheck?.count % productRules[i].itemType.amount) *
+                (Math.floor(itemToCheck?.count / productRule.itemType.amount) *
+                  productRule.itemType.amount *
+                  productRule.discountType.price +
+                  (itemToCheck?.count % productRule.itemType.amount) *
                     normalPrice) /
                 itemToCheck?.count;
               discount.price = avgPrice || 0;
             }
-            if (productRules[i].discountType.percent) {
+            if (productRule.discountType.percent) {
               const normalPercent = 100;
               const avgPercent =
-                (Math.floor(
-                  itemToCheck?.count / productRules[i].itemType.amount
-                ) *
-                  productRules[i].itemType.amount *
-                  productRules[i].discountType.percent +
-                  (itemToCheck?.count % productRules[i].itemType.amount) *
+                (Math.floor(itemToCheck?.count / productRule.itemType.amount) *
+                  productRule.itemType.amount *
+                  productRule.discountType.percent +
+                  (itemToCheck?.count % productRule.itemType.amount) *
                     normalPercent) /
                 itemToCheck?.count;
               discount.percent = avgPercent;
@@ -125,12 +120,15 @@ class CheckoutModule extends React.Component<IProps, IStates> {
     else return false;
   }
 
-  applyRule(items: IItemProduct[], itemIndex: number, discount: IDiscountResult) {
+  applyRule(
+    items: IItemProduct[],
+    itemIndex: number,
+    discount: IDiscountResult
+  ) {
     const totalAmount = discount.totalAmount || items[itemIndex].count;
     const price = discount.price || items[itemIndex].item.price;
     const percent = discount.percent || 100;
-    console.log(totalAmount, price, percent);
-    this.prices.push(totalAmount * price * (percent/100));
+    this.prices.push(totalAmount * price * (percent / 100));
   }
 
   render() {
@@ -167,7 +165,9 @@ class CheckoutModule extends React.Component<IProps, IStates> {
                 );
               })}
             />
-            <div style={{marginBottom: "15px"}}>Total Price: {this.state.price}</div>
+            <div style={{ marginBottom: "15px" }}>
+              Total Price: {this.state.price}
+            </div>
           </Container>
         }
       />

@@ -18,7 +18,8 @@ import {
   operatorSelect,
   pizzaSelect,
   productDiscountType,
-  ruleModes
+  ruleModes,
+  defaultRule
 } from "../constants/index";
 //type
 import { IItemAdd } from "../types/Table";
@@ -43,7 +44,7 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
     this.selectedVendor = vendorData[0].value;
     this.state = {
       addedItems: [],
-      rules: [],
+      rules: defaultRule,
       currentRule: undefined,
       isEdit: false
     };
@@ -227,6 +228,7 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
           mode={ruleModes.ADD.value}
         />
         <Checkout addedItems={this.state.addedItems} rules={this.state.rules} />
+        <Button variant="contained" onClick={() => this.setState({addedItems: []})}>Clear Cart</Button>
         <ListComponent
           items={this.state.rules.map((rule, index) => (
             <ListItemCollapse
