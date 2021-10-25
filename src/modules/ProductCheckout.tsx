@@ -55,7 +55,6 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
   addItemVendor(item: IItemAdd) {
     const itemProduct: IItemProduct = {
       count: 1,
-      totalPrice: 0,
       ...item
     };
     const itemsCheckout: IItemsCheckout = {
@@ -73,7 +72,6 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
     if (itemProductIndex === -1) {
       const itemProduct: IItemProduct = {
         count: 1,
-        totalPrice: 0,
         ...item
       };
       itemCheckout.items.push(itemProduct);
@@ -99,7 +97,7 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
     this.selectedVendor = vendorData.find((vd) => vd.value === vendor)?.value;
   }
 
-  onRuleAdd(ruleData: IRuleData) {
+  onRuleAdd(ruleData: IRuleData): IRuleData[] {
     // console.log(ruleData);
     const rule = { ...ruleData };
     if (this.currentIndex === -1) {
@@ -108,12 +106,14 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
       this.state.rules[this.currentIndex] = ruleData;
     }
     this.setState({ rules: this.state.rules });
+    return this.state.rules;
   }
 
-  onEditRule(index: number) {
+  onEditRule(index: number): IRuleData | undefined {
     this.currentIndex = index;
     this.setState({ isEdit: true, currentRule: this.state.rules[index] });
     this.editNode.current?.AddData(this.state.rules[index]);
+    return this.state.currentRule;
   }
 
   onEditRuleClose() {
@@ -121,10 +121,10 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
     this.setState({ isEdit: false, currentRule: undefined });
   }
 
-  moveRule(dir: string, index: number) {
+  moveRule(dir: string, index: number): IRuleData[] | false {
     switch (dir) {
       case "up":
-        if (index === 0) return;
+        if (index === 0) return false;
         this.state.rules.splice(
           index - 1,
           0,
@@ -133,7 +133,7 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
         break;
 
       case "down":
-        if (index === this.state.rules.length - 1) return;
+        if (index === this.state.rules.length - 1) return false;
         this.state.rules.splice(
           index + 1,
           0,
@@ -142,11 +142,13 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
         break;
     }
     this.setState({ rules: this.state.rules });
+    return this.state.rules;
   }
 
-  removeRule(index: number) {
+  removeRule(index: number): IRuleData[] {
     this.state.rules.splice(index, 1);
     this.setState({ rules: this.state.rules });
+    return this.state.rules;
   }
 
   mapDiscountMessage(ruleData: IRuleData): string {
@@ -227,7 +229,7 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
           onRuleAdd={(ruleData) => this.onRuleAdd(ruleData)}
           mode={ruleModes.ADD.value}
         />
-        <Checkout addedItems={this.state.addedItems} rules={this.state.rules} />
+        <Checkout addedItems={this.state.addedItems} rules={this.state.rules}/>
         <Button variant="contained" onClick={() => this.setState({addedItems: []})}>Clear Cart</Button>
         <ListComponent
           items={this.state.rules.map((rule, index) => (
