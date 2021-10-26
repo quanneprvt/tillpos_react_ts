@@ -6,7 +6,7 @@ To add more rules please notice:
 - Operator is used for "ALL" product in Discount Type only.
 - "EACH" product is used amount comparision only, ignore the Operator.
 - Price and Percent can be used once at the same time.
-- If 2 discount with the same condition is added, the latest one will have more priority.\
+- If 2 discount with the same condition is added, the latest one will have more priority.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
