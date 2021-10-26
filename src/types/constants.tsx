@@ -26,4 +26,10 @@ interface IRuleMode {
   EDIT: ISelect;
 }
 
-export type { IProductData, IVendorData, ISelectCondition, IProductDiscountType, IRuleMode };
+export type {
+  IProductData,
+  IVendorData,
+  ISelectCondition,
+  IProductDiscountType,
+  IRuleMode
+};

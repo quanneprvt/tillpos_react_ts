@@ -229,8 +229,13 @@ class ProductCheckoutModule extends React.Component<IProps, IStates> {
           onRuleAdd={(ruleData) => this.onRuleAdd(ruleData)}
           mode={ruleModes.ADD.value}
         />
-        <Checkout addedItems={this.state.addedItems} rules={this.state.rules}/>
-        <Button variant="contained" onClick={() => this.setState({addedItems: []})}>Clear Cart</Button>
+        <Checkout addedItems={this.state.addedItems} rules={this.state.rules} />
+        <Button
+          variant="contained"
+          onClick={() => this.setState({ addedItems: [] })}
+        >
+          Clear Cart
+        </Button>
         <ListComponent
           items={this.state.rules.map((rule, index) => (
             <ListItemCollapse

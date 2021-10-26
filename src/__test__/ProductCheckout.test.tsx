@@ -37,24 +37,28 @@ const vendors: Array<string> = ["microsoft", "default", "facebook"];
 interface IItemCase {
   id: number;
   count: number;
-};
+}
 const cases = [
   {
     vendor: "default",
     items: [
-      {id: 0, count: 1}, {id: 1, count: 1}, {id: 2, count: 1}
+      { id: 0, count: 1 },
+      { id: 1, count: 1 },
+      { id: 2, count: 1 }
     ]
   },
   {
     vendor: "microsoft",
     items: [
-      {id: 0, count: 3}, {id: 2, count: 1}
+      { id: 0, count: 3 },
+      { id: 2, count: 1 }
     ]
   },
   {
     vendor: "amazon",
     items: [
-      {id: 1, count: 3}, {id: 2, count: 1}
+      { id: 1, count: 3 },
+      { id: 2, count: 1 }
     ]
   }
 ];
@@ -63,7 +67,9 @@ const results: Array<number> = [49.97, 45.97, 67.96];
 
 describe("ProductCheckout Module", () => {
   let wrapper: ShallowWrapper;
-  beforeEach(() => {wrapper = shallow(<ProductCheckout />)});
+  beforeEach(() => {
+    wrapper = shallow(<ProductCheckout />);
+  });
 
   it("should render correctly", () => expect(wrapper).toMatchSnapshot());
 
@@ -76,10 +82,12 @@ describe("ProductCheckout Module", () => {
     instance.onAddItem(testItem1);
     const add1: IItemsCheckout = {
       vendor: testVendor,
-      items: [{
-        count: 1,
-        ...testItem1
-      }]
+      items: [
+        {
+          count: 1,
+          ...testItem1
+        }
+      ]
     };
     expect(instance.state.addedItems).toEqual([add1]);
   });
@@ -93,24 +101,32 @@ describe("ProductCheckout Module", () => {
     instance.onAddItem(testItem1);
     const add1: IItemsCheckout = {
       vendor: testVendor,
-      items: [{
-        count: 1,
-        ...testItem1
-      }]
+      items: [
+        {
+          count: 1,
+          ...testItem1
+        }
+      ]
     };
     expect(instance.state.addedItems).toEqual([add1]);
     const testItem2 = items[1];
     instance.onAddItem(testItem2);
     const add2: IItemsCheckout = {
       vendor: testVendor,
-      items: [{count: 1, ...testItem1}, {count: 1, ...testItem2}]
+      items: [
+        { count: 1, ...testItem1 },
+        { count: 1, ...testItem2 }
+      ]
     };
     expect(instance.state.addedItems).toEqual([add2]);
     const testItem3 = items[0];
     instance.onAddItem(testItem3);
     const add3: IItemsCheckout = {
       vendor: testVendor,
-      items: [{count: 2, ...testItem1}, {count: 1, ...testItem2}]
+      items: [
+        { count: 2, ...testItem1 },
+        { count: 1, ...testItem2 }
+      ]
     };
     expect(instance.state.addedItems).toEqual([add3]);
   });
@@ -118,18 +134,22 @@ describe("ProductCheckout Module", () => {
   it("price test", () => {
     const instance = wrapper.instance() as ProductCheckout;
     //
-    for (let i = 0; i< cases.length; i++) {
+    for (let i = 0; i < cases.length; i++) {
       const caseData: IItemCase[] = cases[i].items;
       const testVendor = cases[i].vendor;
       instance.selectedVendor = testVendor;
-      for (let j = 0; j< caseData.length; j++) {
-        const item = items.find(itm => itm.id === caseData[j].id);
+      for (let j = 0; j < caseData.length; j++) {
+        const item = items.find((itm) => itm.id === caseData[j].id);
         if (item) {
-          for (let k = 0; k< caseData[j].count; k ++)
-            instance.onAddItem(item);
+          for (let k = 0; k < caseData[j].count; k++) instance.onAddItem(item);
         }
       }
-      const checkoutWrapper: ShallowWrapper = shallow(<Checkout addedItems={instance.state.addedItems} rules={instance.state.rules}/>);
+      const checkoutWrapper: ShallowWrapper = shallow(
+        <Checkout
+          addedItems={instance.state.addedItems}
+          rules={instance.state.rules}
+        />
+      );
       const checkoutInstance = checkoutWrapper.instance() as Checkout;
       const price = checkoutInstance.calculatePrice();
       expect(price).toEqual(results[i]);
